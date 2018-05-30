@@ -2,6 +2,7 @@
 *.asm
 *.hack
 *.o
+*.d
 *.stackdump
 \.settings
 .cproject
