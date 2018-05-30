@@ -1,0 +1,8 @@
+*.exe
+*.asm
+*.hack
+*.o
+*.stackdump
+\.settings
+.cproject
+.project
