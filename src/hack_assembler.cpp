@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "instruction.hpp"
+#include "label.hpp"
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -9,14 +10,20 @@ int main(int argc, char *argv[]) {
 	string filename = argv[1];
 	ifstream filein(filename);
 	vector<string> instruction;
+	int addrCount = 0;
 
 	for (string line; getline(filein, line);) {
 		if (line[0] == '/')
 			continue;
 		else if (line[0] == '\r')
 			continue;
-		else
+/*		else if (line[0] == '(') {
+			extractLabel(line, addrCount);
+		}*/
+		else {
 			instruction.push_back(line);
+//			addrCount++;
+		}
 	}
 
 	auto count = filename.find(".");

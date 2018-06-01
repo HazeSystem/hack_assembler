@@ -1,6 +1,4 @@
-#include <fstream>
-#include <iostream>
-#include <vector>
+#include <string>
 using namespace std;
 
 class Instruction {
@@ -10,3 +8,5 @@ public:
 	string jump(string);
 	string aIns(string);
 };
+
+bool isNumber(string);

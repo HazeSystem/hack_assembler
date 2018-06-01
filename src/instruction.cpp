@@ -1,8 +1,9 @@
-#include <fstream>
-#include <iostream>
-#include <vector>
+#include <algorithm>
 #include <map>
+#include <string>
+#include <iostream>
 #include "instruction.hpp"
+#include "label.hpp"
 using namespace std;
 
 map<string, string> compLUT = {
@@ -16,7 +17,7 @@ map<string, string> compLUT = {
 		{"M+1", "110111"}, {"M-1", "110010"}, {"D+M", "000010"},
 		{"D-M", "010011"}, {"M-D", "000111"}, {"D&M", "000000"},
 		{"D|M", "010101"}
-}; // if map[i] > map[18], a=1, otherwise a=0
+};
 
 map<string, string> destLUT = {
 		{"", "000"}, {"M", "001"}, {"D", "010"},
@@ -65,21 +66,48 @@ string Instruction::jump(string instruction) {
 	return bin;
 }
 
+/*
+void test(string sub) {
+	cout << sub;
+}
+*/
+
 string Instruction::aIns(string instruction) {
 	auto pos = instruction.find("@");
-	short sub = (short) stoi(instruction.substr(pos+1),nullptr);
+	string sub = instruction.substr(pos+1);
+	cout << sub << endl;
+	bool num = isNumber(sub);
+
+	if (!num) {
+		sub = getSymbol(instruction.substr(pos+1));
+	}
+
+	short addr = (short) stoi(sub,nullptr);
 	string bin = "000000000000000";
 
-	auto sub_iter = sub;
+	auto addr_iter = addr;
 	for (auto i = 14; i >= 0; i--) {
-		if (sub_iter % 2 == 0) {
+		if (addr_iter % 2 == 0) {
 			bin[i] = '0';
 		}
-		else if (sub_iter % 2 == 1) {
+		else if (addr_iter % 2 == 1) {
 			bin[i] = '1';
 		}
-		sub_iter >>= 1;
+		addr_iter >>= 1;
 	}
 	bin = "0" + bin;
 	return bin;
 }
+
+bool isNumber(string sub) {
+	cout << sub;
+
+	auto is_num = [](const char c) {
+		return c >= '0' && c <= '9';
+	};
+
+	bool num = all_of(sub.begin(), sub.end(), is_num);
+
+	return num;
+}
+

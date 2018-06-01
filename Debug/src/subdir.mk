@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/hack_assembler.cpp \
-../src/instruction.cpp 
+../src/instruction.cpp \
+../src/label.cpp 
 
 OBJS += \
 ./src/hack_assembler.o \
-./src/instruction.o 
+./src/instruction.o \
+./src/label.o 
 
 CPP_DEPS += \
 ./src/hack_assembler.d \
-./src/instruction.d 
+./src/instruction.d \
+./src/label.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
