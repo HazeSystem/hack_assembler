@@ -10,3 +10,4 @@ public:
 };
 
 bool isNumber(string);
+string trim(string);

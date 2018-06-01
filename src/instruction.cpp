@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <boost/algorithm/string.hpp>
 #include "instruction.hpp"
 #include "label.hpp"
 using namespace std;
@@ -33,7 +34,6 @@ map<string, string> jumpLUT = {
 string Instruction::comp(string instruction) {
 	auto pos = instruction.find("=");
 	string sub = instruction.substr(pos+1);
-	sub.pop_back(); //remove whatever character substr() adds to the end
 	string bin = compLUT[sub];
 
 	if (sub.find("M") != string::npos)
@@ -58,7 +58,6 @@ string Instruction::jump(string instruction) {
 	string bincomp = compLUT[subcomp];
 
 	string subjump = instruction.substr(delim+1);
-	subjump.pop_back();
 	string binjump = jumpLUT[subjump];
 
 	string bin = "0" + bincomp + "000" + binjump;
@@ -66,26 +65,23 @@ string Instruction::jump(string instruction) {
 	return bin;
 }
 
-/*
-void test(string sub) {
-	cout << sub;
-}
-*/
-
 string Instruction::aIns(string instruction) {
 	auto pos = instruction.find("@");
 	string sub = instruction.substr(pos+1);
-	cout << sub << endl;
-	bool num = isNumber(sub);
+//	sub.pop_back();
+	auto num = isNumber(sub);
+	short addr = 0;
 
-	if (!num) {
-		sub = getSymbol(instruction.substr(pos+1));
+	if (num) {
+		addr = (short) stoi(sub,nullptr);
+	}
+	else if (!num) {
+		addr = getSymbol(sub);
 	}
 
-	short addr = (short) stoi(sub,nullptr);
 	string bin = "000000000000000";
 
-	auto addr_iter = addr;
+	short addr_iter = addr;
 	for (auto i = 14; i >= 0; i--) {
 		if (addr_iter % 2 == 0) {
 			bin[i] = '0';
@@ -96,18 +92,23 @@ string Instruction::aIns(string instruction) {
 		addr_iter >>= 1;
 	}
 	bin = "0" + bin;
+
 	return bin;
 }
 
-bool isNumber(string sub) {
-	cout << sub;
-
+bool isNumber(string address) {
 	auto is_num = [](const char c) {
 		return c >= '0' && c <= '9';
 	};
 
-	bool num = all_of(sub.begin(), sub.end(), is_num);
+	bool num = all_of(address.begin(), address.end(), is_num);
 
 	return num;
 }
 
+string trim (string instruction) {
+	boost::trim_right(instruction);
+	boost::trim_left(instruction);
+
+	return instruction;
+}

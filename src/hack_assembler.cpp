@@ -10,19 +10,25 @@ int main(int argc, char *argv[]) {
 	string filename = argv[1];
 	ifstream filein(filename);
 	vector<string> instruction;
-	int addrCount = 0;
+	short addrCount = 0;
 
 	for (string line; getline(filein, line);) {
+		auto count = line.find("//");
+
 		if (line[0] == '/')
 			continue;
 		else if (line[0] == '\r')
 			continue;
-/*		else if (line[0] == '(') {
+		else if (line[0] == '(') {
 			extractLabel(line, addrCount);
-		}*/
+		}
+		else if (count != string::npos) {
+			instruction.push_back(trim(line.substr(0, count)));
+			addrCount++;
+		}
 		else {
-			instruction.push_back(line);
-//			addrCount++;
+			instruction.push_back(trim(line));
+			addrCount++;
 		}
 	}
 

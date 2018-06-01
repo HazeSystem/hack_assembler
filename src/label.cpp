@@ -5,6 +5,8 @@
 #include "label.hpp"
 using namespace std;
 
+short nextFreeAddr = 16;
+
 map<string, short> symbolLUT = {
 		{"SP", 0}, {"LCL", 1}, {"ARG", 2}, {"THIS", 3}, {"THAT", 4},
 		{"R0", 0}, {"R1", 1}, {"R2", 2}, {"R3", 3},
@@ -14,24 +16,28 @@ map<string, short> symbolLUT = {
 		{"SCREEN", 16384}, {"KBD", 24576}
 };
 
-void addEntry(string line, int addr) {
-	symbolLUT.insert(pair<string, int>(line, addr));
+void addEntry(string line, short addr) {
+	symbolLUT.insert(pair<string, short>(line, addr));
 }
 
-int getSymbol(string sym) {
-	return symbolLUT[sym];
+short getSymbol(string sym) {
+	auto search = symbolLUT.find(sym);
+	short value = 0;
+
+	if (search == symbolLUT.end()) {
+		addEntry(sym, nextFreeAddr);
+		value = symbolLUT[sym];
+		nextFreeAddr++;
+	}
+	else
+		value = search->second;
+
+	return value;
 }
 
-void extractLabel(string line, int addr) {
+void extractLabel(string line, short addr) {
 	auto pos = line.find("(");
 	auto count = line.find(")");
 	string sub = line.substr(pos+1, count-1);
 	addEntry(sub, addr);
-}
-
-void printLUT() {
-	for(auto elem : symbolLUT)
-	{
-	   std::cout << elem.first << " " << elem.second << "\n";
-	}
 }

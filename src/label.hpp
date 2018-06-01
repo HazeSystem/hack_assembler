@@ -2,8 +2,6 @@
 #include <string>
 using namespace std;
 
-void addEntry(string, int);
-void extractLabel(string, int);
-int getSymbol(string);
-void printLUT();
-
+void addEntry(string, short);
+void extractLabel(string, short);
+short getSymbol(string);
