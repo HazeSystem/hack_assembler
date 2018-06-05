@@ -3,5 +3,5 @@
 using namespace std;
 
 void addEntry(string, short);
-void extractLabel(string, short);
+void parseLabel(string, short);
 short getSymbol(string);

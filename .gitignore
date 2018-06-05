@@ -5,5 +5,7 @@
 *.d
 *.stackdump
 \.settings
+\.idea
+\build
 .cproject
 .project
