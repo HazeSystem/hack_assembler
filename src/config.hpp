@@ -1,9 +1,7 @@
 #if defined(linux) || defined(APPLE)
-#define SLASH '/'
-#define LINE_END '\n'
+#define LINE_END 0
 #endif
 
 #ifdef __CYGWIN__
-#define SLASH '\\'
 #define LINE_END '\r'
 #endif
